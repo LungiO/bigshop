@@ -5,6 +5,7 @@ import products.ProductType;
 import products.Receipt;
 import service.DiscountService;
 import service.ReceiptService;
+import service.ValidationService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,11 +15,13 @@ public class Basket {
     private Map<ProductType, Item> items;
     private DiscountService discountService;
     private ReceiptService receiptService;
+    private ValidationService validationService;
 
     public Basket() {
         this.items = new HashMap<>();
         this.discountService = DiscountService.getInstance();
         this.receiptService = ReceiptService.getInstance();
+        this.validationService = ValidationService.getInstance();
     }
 
     public void addItem(ProductType productType) {
@@ -27,9 +30,11 @@ public class Basket {
         }
         Item item = items.computeIfAbsent(productType, product -> new Item(productType));
         item.incrementCount();
+        validationService.validateItems(items);
     }
 
     public void checkOut() {
+        validationService.validateItems(items);
         discountService.calculateDiscounts(items);
         this.receipt = this.receiptService.createReceipt(items);
     }

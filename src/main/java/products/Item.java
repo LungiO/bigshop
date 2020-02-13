@@ -25,16 +25,16 @@ public class Item {
         this.discounts.add(discount);
     }
 
+    public void setCount(int count) {
+        this.count = count;
+    }
+
     public int getCount() {
         return this.count;
     }
 
     public void incrementCount() {
         this.count++;
-    }
-
-    public double getUnitPrice() {
-        return this.unitPrice;
     }
 
     public double getTotalDiscount() {
