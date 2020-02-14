@@ -39,10 +39,10 @@ public class Basket {
         this.receipt = this.receiptService.createReceipt(items);
     }
 
-    public String getReceipt() {
+    public Receipt getReceipt() {
         if (this.receipt == null) {
             return null;
         }
-        return this.receipt.getReceipt();
+        return this.receipt;
     }
 }

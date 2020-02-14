@@ -13,7 +13,7 @@ public class Shop {
         }
 
         basket.checkOut();
-        System.out.println(basket.getReceipt());
+        System.out.println(basket.getReceipt().getReceipt());
     }
 
     private static String removeTrailingComma(String product) {

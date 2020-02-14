@@ -29,7 +29,7 @@ public class ValidationService {
             return;
         } else if (simCard.getCount() > MAX_SIM_CARDS) {
             simCard.setCount(MAX_SIM_CARDS);
-            System.err.println(String.format("Max number of %s is %d.\n", ProductType.SIM_CARD.getDesc(), MAX_SIM_CARDS));
+            System.err.println(String.format("Max number of %s is %d.", ProductType.SIM_CARD.getDesc(), MAX_SIM_CARDS));
         }
     }
 }

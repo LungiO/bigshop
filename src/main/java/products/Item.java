@@ -8,6 +8,8 @@ public class Item {
     private double unitPrice;
     private double tax;
 
+    // If I use a map instead of a list, I could group different kind of discounts together.
+    // This would also allow me to print the different discounts in the receipt.
     private List<Discount> discounts;
 
     public Item(ProductType productType) {
