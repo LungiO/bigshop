@@ -1,30 +1,30 @@
 package products;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Item {
     private int count;
     private double unitPrice;
     private double tax;
 
-    // If I use a map instead of a list, I could group different kind of discounts together.
-    // This would also allow me to print the different discounts in the receipt.
-    private List<Discount> discounts;
+    private Map<Discount, Integer> discounts;
 
     public Item(ProductType productType) {
         this.unitPrice = productType.getPrice();
         this.tax = productType.getTax();
         this.count = 0;
-        this.discounts = new ArrayList<>();
+        this.discounts = new HashMap<>();
     }
 
     public void clearDiscounts() {
         this.discounts.clear();
     }
 
-    public void addDiscount(Discount discount) {
-        this.discounts.add(discount);
+    public void addDiscount(Discount discount, int count) {
+        int discountCount = this.discounts.computeIfAbsent(discount, d -> 0);
+        discountCount += count;
+        this.discounts.put(discount, discountCount);
     }
 
     public void setCount(int count) {
@@ -41,9 +41,21 @@ public class Item {
 
     public double getTotalDiscount() {
         // assumption: only one discount per unit allowed, no accumulation of discounts
-        return this.discounts.stream()
-                .mapToDouble(discounts -> discounts.getDiscount() * this.unitPrice)
-                .sum();
+        double totalDiscount = 0;
+        for (Map.Entry<Discount, Integer> entry : this.discounts.entrySet()) {
+            totalDiscount += entry.getKey().getDiscount() * this.unitPrice * entry.getValue();
+        }
+        return totalDiscount;
+    }
+
+    public Map<Discount, Double> getDiscountsGrouped() {
+        Map<Discount, Double> discountsGrouped = new HashMap<>();
+        for (Map.Entry<Discount, Integer> entry : this.discounts.entrySet()) {
+            Discount discount = entry.getKey();
+            double discountValue = discount.getDiscount() * this.unitPrice * entry.getValue();
+            discountsGrouped.put(discount, discountValue);
+        }
+        return discountsGrouped;
     }
 
     public double getTotalPriceWithoutDiscount() {

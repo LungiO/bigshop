@@ -7,7 +7,7 @@ import service.DiscountService;
 import service.ReceiptService;
 import service.ValidationService;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Basket {
@@ -18,7 +18,7 @@ public class Basket {
     private ValidationService validationService;
 
     public Basket() {
-        this.items = new HashMap<>();
+        this.items = new LinkedHashMap<>();
         this.discountService = DiscountService.getInstance();
         this.receiptService = ReceiptService.getInstance();
         this.validationService = ValidationService.getInstance();

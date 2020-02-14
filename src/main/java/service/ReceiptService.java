@@ -1,5 +1,6 @@
 package service;
 
+import products.Discount;
 import products.Item;
 import products.ProductType;
 import products.Receipt;
@@ -7,7 +8,7 @@ import products.Receipt;
 import java.util.Map;
 
 public class ReceiptService {
-    public static final String LINE_SEPARATOR = "---------------------------------------\n";
+    public static final String LINE_SEPARATOR = "--------------------------------------------------\n";
     private static ReceiptService instance = null;
 
     private ReceiptService() {
@@ -47,33 +48,33 @@ public class ReceiptService {
 
     private void addReceiptEntry(StringBuilder sb, ProductType productType, Item item) {
         sb.append(String.format(
-                "%dx %-20s %10.2f chf\n", item.getCount(), productType.getDesc(), item.getTotalPriceWithoutDiscount()
+                "%2dx %-30s %10.2f chf\n", item.getCount(), productType.getDesc(), item.getTotalPriceWithoutDiscount()
         ));
     }
 
     private void addDiscountEntry(StringBuilder sb, Item item) {
-        double totalDiscount = item.getTotalDiscount();
-        if (totalDiscount > 0) {
-            sb.append(String.format(
-                    "   %-20s %10.2f chf\n", "discount", (totalDiscount * -1)
-            ));
-        }
+        Map<Discount, Double> discountsGrouped = item.getDiscountsGrouped();
+        discountsGrouped.forEach((discount, discountValue) ->
+                sb.append(String.format(
+                        "    %-30s %10.2f chf\n", discount.getDesc(), (discountValue * -1)
+                ))
+        );
     }
 
     private void addSubTotalAndTax(StringBuilder sb, double subTotal, double tax) {
         sb.append(LINE_SEPARATOR);
         sb.append(String.format(
-                "%-23s %10.2f chf\n", "subtotal", subTotal
+                "%-34s %10.2f chf\n", "subtotal", subTotal
         ));
         sb.append(String.format(
-                "%-23s %10.2f chf\n", "tax", tax
+                "%-34s %10.2f chf\n", "tax", tax
         ));
     }
 
     private void addTotal(StringBuilder sb, double total) {
         sb.append(LINE_SEPARATOR);
         sb.append(String.format(
-                "%-23s %10.2f chf\n", "total", total
+                "%-34s %10.2f chf\n", "total", total
         ));
     }
 }

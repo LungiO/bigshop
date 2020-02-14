@@ -40,7 +40,7 @@ public class DiscountService {
         }
 
         int discountCount = simCard.getCount() / 2;
-        addDiscount(simCard, Discount.SIM_2_FOR_1, discountCount);
+        simCard.addDiscount(Discount.SIM_2_FOR_1, discountCount);
     }
 
     private void addPhoneInsuranceDiscount(Map<ProductType, Item> items) {
@@ -54,7 +54,7 @@ public class DiscountService {
         // 1x insurances and 2x earphones will give discount once
         int earPhoneCount = getEarphoneCount(items);
         int discountCount = Math.min(phoneInsurance.getCount(), earPhoneCount);
-        addDiscount(phoneInsurance, Discount.INSURANCE_EARPHONES, discountCount);
+        phoneInsurance.addDiscount(Discount.INSURANCE_EARPHONES, discountCount);
     }
 
     private int getEarphoneCount(Map<ProductType, Item> items) {
@@ -65,11 +65,5 @@ public class DiscountService {
         earPhoneCount += wirelessEarPhone != null ? wirelessEarPhone.getCount() : 0;
 
         return earPhoneCount;
-    }
-
-    private void addDiscount(Item product, Discount discount, int count) {
-        for (int i = 0; i < count; i++) {
-            product.addDiscount(discount);
-        }
     }
 }
